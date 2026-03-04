@@ -47,20 +47,20 @@ export function Hero() {
           <span>Passo Fundo, RS</span>
         </motion.div>
 
-        {/* Headline (Sentence case, exact requested sizes) */}
+        {/* Headline */}
         <motion.h1
-          className="font-bold text-white leading-[1.1] max-w-[850px] text-balance tracking-tight text-3xl md:text-[48px]"
+          className="font-bold text-white leading-[1.1] max-w-[850px] text-balance tracking-tight text-3xl md:text-4xl lg:text-[40px]"
           variants={fadeUp}
         >
           Fortaleça seu estoque de peças para plantadeiras com quem fabrica há mais de 25 Anos.
         </motion.h1>
 
-        {/* Sub (Sentence case, exact requested size) */}
+        {/* Sub */}
         <motion.p
-          className="mt-5 text-white/80 leading-[1.4] max-w-[750px] text-balance font-normal text-base md:text-[30px]"
+          className="mt-5 text-white/80 leading-relaxed max-w-[750px] text-balance font-normal text-base md:text-lg lg:text-xl"
           variants={fadeUp}
         >
-          Somos a solução definitiva para o suprimento da sua revenda. Mais de 150 referências a pronta entrega com alta durabilidade e faturamento direto de fábrica.
+          Somos a solução definitiva para sua revenda. Mais de 150 referências entre Semeato, Vence Tudo, Jumil e muito mais a pronta entrega com alta durabilidade e margem.
         </motion.p>
 
         {/* Buttons (Clear separation from text block) */}

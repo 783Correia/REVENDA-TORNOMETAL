@@ -29,7 +29,7 @@ const provas = [
 
 export function SocialProof() {
     return (
-        <section className="bg-[#0A1628] py-16 md:py-24 border-t border-white/[0.06]">
+        <section className="bg-[#F8FAFC] py-16 md:py-24 border-t border-[#E2E8F0]">
             <div className="max-w-[1120px] mx-auto px-5">
                 <motion.div
                     className="text-center mb-12"
@@ -42,12 +42,12 @@ export function SocialProof() {
                         Provas Sociais
                     </span>
                     <h2
-                        className="mt-4 font-semibold text-white leading-[1.2] mx-auto max-w-[560px]"
+                        className="mt-4 font-semibold text-[#0F172A] leading-[1.2] mx-auto max-w-[560px]"
                         style={{ fontSize: "clamp(22px, 2.8vw, 32px)" }}
                     >
                         Feedback real de quem já compra da Torno Metal
                     </h2>
-                    <p className="mt-3 text-white/35 text-[15px] max-w-[480px] mx-auto">
+                    <p className="mt-3 text-[#475569] text-[15px] max-w-[480px] mx-auto">
                         Prints reais de clientes no WhatsApp — sem filtro, sem edição.
                     </p>
                 </motion.div>
@@ -62,7 +62,7 @@ export function SocialProof() {
                     {provas.map((prova) => (
                         <motion.div
                             key={prova.src}
-                            className="group relative rounded-xl overflow-hidden border border-white/[0.06] transition-all duration-300 hover:border-white/[0.15] hover:scale-[1.02]"
+                            className="group relative rounded-xl overflow-hidden shadow-sm border border-[#E2E8F0] transition-all duration-300 hover:shadow-md hover:border-[#1B8DC0]/30 hover:-translate-y-1"
                             variants={fadeUp}
                         >
                             <div className="relative aspect-[9/16]">
@@ -88,7 +88,7 @@ export function SocialProof() {
                 </motion.div>
 
                 <motion.p
-                    className="text-center mt-8 text-white/20 text-[13px]"
+                    className="text-center mt-8 text-[#94A3B8] text-[13px]"
                     variants={fadeUp}
                     initial="hidden"
                     whileInView="visible"

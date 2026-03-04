@@ -29,7 +29,7 @@ const cards = [
 
 export function Benefits() {
   return (
-    <section id="beneficios" className="bg-[#0A1628] py-16 md:py-24 border-t border-white/[0.06]">
+    <section id="beneficios" className="bg-[#F8FAFC] py-16 md:py-24 border-t border-[#E2E8F0]">
       <div className="max-w-[1120px] mx-auto px-5">
         <motion.span
           className="text-[11px] font-semibold uppercase tracking-[0.2em] text-[#2BAAD4]"
@@ -42,7 +42,7 @@ export function Benefits() {
         </motion.span>
 
         <motion.h2
-          className="mt-4 font-semibold text-white leading-[1.2] max-w-[480px]"
+          className="mt-4 font-semibold text-[#0F172A] leading-[1.2] max-w-[480px]"
           style={{ fontSize: "clamp(22px, 2.8vw, 32px)" }}
           variants={fadeUp}
           initial="hidden"
@@ -64,18 +64,18 @@ export function Benefits() {
             return (
               <motion.div
                 key={card.title}
-                className="group rounded-xl p-6 bg-white/[0.03] border border-white/[0.06] transition-all duration-300 hover:bg-white/[0.05] hover:border-white/[0.1]"
+                className="group rounded-xl p-6 bg-white border border-[#E2E8F0] shadow-sm transition-all duration-300 hover:shadow-md hover:border-[#1B8DC0]/30 hover:-translate-y-1"
                 variants={fadeUp}
               >
-                <div className="w-9 h-9 rounded-lg bg-[#2BAAD4]/10 flex items-center justify-center">
-                  <Icon size={18} className="text-[#2BAAD4]" />
+                <div className="w-9 h-9 rounded-lg bg-[#F0F9FF] flex items-center justify-center">
+                  <Icon size={18} className="text-[#0284C7]" />
                 </div>
 
-                <h3 className="mt-4 text-[15px] font-semibold text-white">
+                <h3 className="mt-4 text-[15px] font-semibold text-[#0F172A]">
                   {card.title}
                 </h3>
 
-                <p className="mt-2 text-sm text-white/35 leading-relaxed">
+                <p className="mt-2 text-sm text-[#475569] leading-relaxed">
                   {card.text}
                 </p>
               </motion.div>

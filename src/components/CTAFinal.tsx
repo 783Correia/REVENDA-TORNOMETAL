@@ -14,8 +14,12 @@ export function CTAFinal() {
         whileInView="visible"
         viewport={{ once: true, margin: "-80px" }}
       >
-        <div className="rounded-2xl bg-[#F8FAFC] border border-[#E2E8F0] shadow-sm p-8 md:p-14 flex flex-col md:flex-row md:items-center md:justify-between gap-8">
-          <div className="max-w-[520px]">
+        <div className="relative rounded-3xl overflow-hidden p-8 md:p-14 flex flex-col md:flex-row md:items-center md:justify-between gap-8 shadow-[0_10px_40px_-10px_rgba(43,170,212,0.15)] border border-[#2BAAD4]/20 bg-gradient-to-br from-[#F0F9FF]/80 to-white/60 backdrop-blur-xl">
+          {/* Subtle decorative glow */}
+          <div className="absolute top-0 right-0 w-64 h-64 bg-[#2BAAD4]/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3 pointer-events-none" />
+          <div className="absolute bottom-0 left-0 w-40 h-40 bg-[#00FFcc]/5 rounded-full blur-2xl translate-y-1/3 -translate-x-1/4 pointer-events-none" />
+
+          <div className="relative z-10 max-w-[520px]">
             <h2
               className="font-semibold text-[#0F172A] leading-[1.2]"
               style={{ fontSize: "clamp(22px, 2.8vw, 32px)" }}
@@ -29,7 +33,7 @@ export function CTAFinal() {
             </p>
           </div>
 
-          <div className="flex-shrink-0">
+          <div className="relative z-10 flex-shrink-0">
             <a
               href={WHATSAPP_URL}
               target="_blank"

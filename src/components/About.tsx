@@ -1,6 +1,7 @@
 "use client"
 
 import { motion } from "framer-motion"
+import Image from "next/image"
 import { fadeUp } from "@/lib/animations"
 
 export function About() {
@@ -77,11 +78,15 @@ export function About() {
             whileInView="visible"
             viewport={{ once: true, margin: "-80px" }}
           >
-            <img
-              src="/fachada.png"
-              alt="Fachada da fábrica Tornometal"
-              className="object-cover w-full h-full hover:scale-105 transition-transform duration-700"
-            />
+            <div className="absolute inset-0">
+              <Image
+                src="/fachada.png"
+                alt="Fachada da fábrica Tornometal"
+                fill
+                sizes="(max-width: 1024px) 100vw, 50vw"
+                className="object-cover hover:scale-105 transition-transform duration-700"
+              />
+            </div>
             {/* Elegant overlay gradient connecting image to background */}
             <div className="absolute inset-0 bg-gradient-to-t from-white via-transparent to-transparent opacity-90" />
 

@@ -75,7 +75,7 @@ export function ProductCarousel() {
                             {cat}
                         </span>
                     ))}
-                    <span className="bg-[#0A1628] text-white rounded-lg px-4 py-2 text-[13px] font-medium">
+                    <span className="bg-[#113d5e] text-white rounded-lg px-4 py-2 text-[13px] font-medium">
                         +20 categorias
                     </span>
                 </motion.div>
@@ -116,7 +116,7 @@ export function ProductCarousel() {
                         href={WHATSAPP_URL}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center gap-2 bg-[#0A1628] text-white px-5 py-3 rounded-lg text-sm font-semibold transition-all duration-200 hover:bg-[#162240]"
+                        className="inline-flex items-center gap-2 bg-[#113d5e] text-white px-5 py-3 rounded-lg text-sm font-semibold transition-all duration-200 hover:bg-[#0c2f4a]"
                     >
                         Consultar Disponibilidade
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -127,7 +127,7 @@ export function ProductCarousel() {
                         href="https://tornometalevertonlopes.com.br/loja/"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center gap-2 border border-[#E2E8F0] text-[#334155] px-5 py-3 rounded-lg text-sm font-medium transition-all duration-200 hover:bg-[#0A1628] hover:text-white hover:border-[#0A1628]"
+                        className="inline-flex items-center gap-2 border border-[#E2E8F0] text-[#334155] px-5 py-3 rounded-lg text-sm font-medium transition-all duration-200 hover:bg-[#113d5e] hover:text-white hover:border-[#113d5e]"
                     >
                         Ver Loja Completa
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">

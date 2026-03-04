@@ -6,7 +6,7 @@ import { fadeUp, stagger } from "@/lib/animations"
 
 export function Hero() {
   return (
-    <section className="relative overflow-hidden bg-[#0A1628]">
+    <section className="relative overflow-hidden bg-[#113d5e]">
       {/* Video Background */}
       <video
         autoPlay
@@ -19,9 +19,9 @@ export function Hero() {
       </video>
 
       {/* Professional Overlay Gradients - Made lighter */}
-      <div className="absolute inset-0 z-0 bg-[#0A1628]/30 mix-blend-multiply" />
-      <div className="absolute inset-0 z-0 bg-gradient-to-t from-[#0A1628]/80 via-[#0A1628]/20 to-transparent" />
-      <div className="absolute inset-0 z-0 bg-gradient-to-r from-[#0A1628]/60 via-[#0A1628]/20 to-transparent" />
+      <div className="absolute inset-0 z-0 bg-[#113d5e]/30 mix-blend-multiply" />
+      <div className="absolute inset-0 z-0 bg-gradient-to-t from-[#113d5e]/80 via-[#113d5e]/20 to-transparent" />
+      <div className="absolute inset-0 z-0 bg-gradient-to-r from-[#113d5e]/60 via-[#113d5e]/20 to-transparent" />
 
       {/* Subtle blue accent */}
       <div

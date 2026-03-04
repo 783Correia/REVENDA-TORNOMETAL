@@ -30,11 +30,10 @@ export function Navbar() {
 
   return (
     <nav
-      className={`fixed top-0 left-0 w-full h-16 z-50 flex items-center transition-all duration-300 ${
-        scrolled
-          ? "bg-[#0A1628]/90 backdrop-blur-md border-b border-white/[0.06]"
+      className={`fixed top-0 left-0 w-full h-16 z-50 flex items-center transition-all duration-300 ${scrolled
+          ? "bg-[#113d5e]/90 backdrop-blur-md border-b border-white/[0.06]"
           : "bg-transparent border-b border-transparent"
-      }`}
+        }`}
     >
       <div className="max-w-[1120px] w-full mx-auto px-5 flex items-center justify-between">
         <a href="#" aria-label="Torno Metal Everton Lopes — Início">
@@ -82,7 +81,7 @@ export function Navbar() {
       </div>
 
       {menuOpen && (
-        <div className="fixed inset-0 top-16 z-40 flex flex-col items-center justify-center gap-8 bg-[#0A1628]/98 backdrop-blur-md">
+        <div className="fixed inset-0 top-16 z-40 flex flex-col items-center justify-center gap-8 bg-[#113d5e]/98 backdrop-blur-md">
           {navLinks.map((link) => (
             <a
               key={link.href}

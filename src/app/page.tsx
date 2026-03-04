@@ -5,7 +5,6 @@ import { SocialProof } from "@/components/SocialProof"
 import { About } from "@/components/About"
 import { Benefits } from "@/components/Benefits"
 import { ProductCarousel } from "@/components/ProductCarousel"
-import { Testimonials } from "@/components/Testimonials"
 import { CTAFinal } from "@/components/CTAFinal"
 import { Footer } from "@/components/Footer"
 
@@ -19,7 +18,6 @@ export default function Home() {
       <About />
       <Benefits />
       <ProductCarousel />
-      <Testimonials />
       <CTAFinal />
       <Footer />
     </>

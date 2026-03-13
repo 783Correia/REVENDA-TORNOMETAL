@@ -1,15 +1,15 @@
 "use client"
 
-import { useMemo, useState } from "react"
+import { useMemo, useState, useEffect } from "react"
 import Image from "next/image"
 import { Navbar } from "@/components/Navbar"
 import { Footer } from "@/components/Footer"
 import { motion } from "framer-motion"
 import { fadeUp } from "@/lib/animations"
 import { ImagePlaceholder } from "@/components/ImagePlaceholder"
-import { MessageCircle } from "lucide-react"
+import { MessageCircle, Loader2 } from "lucide-react"
 import { WHATSAPP_URL } from "@/lib/constants"
-import produtosExtraidos from "../../../produtos_extraidos.json"
+import { supabase } from "@/lib/supabase"
 
 interface StoreProduct {
   name: string
@@ -18,8 +18,6 @@ interface StoreProduct {
   image?: string
   categories?: string[]
 }
-
-const storeProducts: StoreProduct[] = produtosExtraidos as StoreProduct[]
 
 const ALL_CATEGORIES_LABEL = "Todos os produtos"
 
@@ -32,23 +30,69 @@ function getCategoryForProduct(product: StoreProduct): string[] {
   return [];
 }
 
-// Generate unique categories list from products
-const uniqueCategories = Array.from(new Set(storeProducts.flatMap(p => getCategoryForProduct(p)))).sort();
-
-const categories: string[] = [
-  ALL_CATEGORIES_LABEL,
-  ...uniqueCategories
-]
-
 export default function ProdutosPage() {
   const [activeCategory, setActiveCategory] = useState<string>(ALL_CATEGORIES_LABEL)
+  const [storeProducts, setStoreProducts] = useState<StoreProduct[]>([])
+  const [isLoading, setIsLoading] = useState(true)
+
+  useEffect(() => {
+    async function loadProducts() {
+      try {
+        const { data, error } = await supabase
+          .from("products")
+          .select(`
+            *,
+            product_images ( src ),
+            categories ( name )
+          `)
+          .eq("status", "publish")
+
+        if (error) throw error
+
+        if (data) {
+          const mappedProducts: StoreProduct[] = data.map((item: any) => {
+            // Price formatting
+            const priceVal = parseFloat(item.price) || 0
+            const formattedPrice = new Intl.NumberFormat("pt-BR", {
+              style: "currency",
+              currency: "BRL"
+            }).format(priceVal)
+
+            return {
+              name: item.name,
+              price: formattedPrice,
+              link: `/produtos/${item.slug || item.id}`, // the actual system might not use this link, but for schema consistency
+              image: item.product_images?.[0]?.src || undefined,
+              categories: item.categories ? [item.categories.name] : []
+            }
+          })
+          setStoreProducts(mappedProducts)
+        }
+      } catch (err) {
+        console.error("Error loading products:", err)
+      } finally {
+        setIsLoading(false)
+      }
+    }
+
+    loadProducts()
+  }, [])
+
+  const uniqueCategories = useMemo(() => {
+    return Array.from(new Set(storeProducts.flatMap(p => getCategoryForProduct(p)))).sort()
+  }, [storeProducts])
+
+  const categoriesToRender: string[] = [
+    ALL_CATEGORIES_LABEL,
+    ...uniqueCategories
+  ]
 
   const filteredProducts = useMemo(() => {
     if (activeCategory === ALL_CATEGORIES_LABEL) return storeProducts
     return storeProducts.filter(
       (product) => getCategoryForProduct(product).includes(activeCategory)
     )
-  }, [activeCategory])
+  }, [activeCategory, storeProducts])
 
   return (
     <>
@@ -90,7 +134,7 @@ export default function ProdutosPage() {
               initial="hidden"
               animate="visible"
             >
-              {categories.map((category) => {
+              {categoriesToRender.map((category) => {
                 const isActive = category === activeCategory
                 return (
                   <button
@@ -108,65 +152,73 @@ export default function ProdutosPage() {
               })}
             </motion.div>
 
-            <motion.div
-              className="mt-6 md:mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6"
-              variants={fadeUp}
-              initial="hidden"
-              animate="visible"
-            >
-              {filteredProducts.map((product) => {
-                const whatsappMessage = encodeURIComponent(`Olá, gostei do produto: ${product.name} no valor de ${product.price}. Gostaria de mais informações.`);
-                const whatsappLink = `${WHATSAPP_URL}?text=${whatsappMessage}`;
+            {isLoading ? (
+              <div className="mt-20 flex flex-col items-center justify-center gap-3">
+                <Loader2 className="animate-spin text-[#1B8DC0]" size={40} />
+                <p className="text-[#475569] text-sm">Carregando catálogo completo...</p>
+              </div>
+            ) : (
 
-                return (
-                  <article
-                    key={product.link}
-                    className="group relative rounded-2xl overflow-hidden bg-white border border-[#E2E8F0]/80 shadow-sm transition-all duration-300 hover:shadow-xl hover:shadow-[#1B8DC0]/10 hover:border-[#1B8DC0]/30 hover:-translate-y-1.5 flex flex-col h-full"
-                  >
-                    <div className="bg-[#f8fafc] w-full p-4 relative flex items-center justify-center">
-                      {product.image ? (
-                        <div className="relative aspect-[4/3] w-full mix-blend-multiply transition-transform duration-500 group-hover:scale-105">
-                          <Image
-                            src={product.image}
-                            alt={product.name}
-                            fill
-                            className="object-contain"
-                            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
+              <motion.div
+                className="mt-6 md:mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6"
+                variants={fadeUp}
+                initial="hidden"
+                animate="visible"
+              >
+                {filteredProducts.map((product) => {
+                  const whatsappMessage = encodeURIComponent(`Olá, gostei do produto: ${product.name} no valor de ${product.price}. Gostaria de mais informações.`);
+                  const whatsappLink = `${WHATSAPP_URL}?text=${whatsappMessage}`;
+
+                  return (
+                    <article
+                      key={product.link + product.name}
+                      className="group relative rounded-2xl overflow-hidden bg-white border border-[#E2E8F0]/80 shadow-sm transition-all duration-300 hover:shadow-xl hover:shadow-[#1B8DC0]/10 hover:border-[#1B8DC0]/30 hover:-translate-y-1.5 flex flex-col h-full"
+                    >
+                      <div className="bg-[#f8fafc] w-full p-4 relative flex items-center justify-center">
+                        {product.image ? (
+                          <div className="relative aspect-[4/3] w-full mix-blend-multiply transition-transform duration-500 group-hover:scale-105">
+                            <Image
+                              src={product.image}
+                              alt={product.name}
+                              fill
+                              className="object-contain"
+                              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
+                            />
+                          </div>
+                        ) : (
+                          <ImagePlaceholder
+                            label={product.name}
+                            className="aspect-[4/3] w-full transition-transform duration-500 group-hover:scale-105"
                           />
-                        </div>
-                      ) : (
-                        <ImagePlaceholder
-                          label={product.name}
-                          className="aspect-[4/3] w-full transition-transform duration-500 group-hover:scale-105"
-                        />
-                      )}
-                    </div>
-
-                    <div className="px-5 py-5 border-t border-[#F1F5F9] bg-white flex flex-col flex-1">
-                      <h3 className="text-[15px] font-medium text-[#0F172A] leading-snug line-clamp-2 md:line-clamp-3 mb-3 flex-1">
-                        {product.name}
-                      </h3>
-
-                      <div className="mt-auto flex flex-col gap-3">
-                        <p className="text-[16px] font-bold text-[#1B8DC0]">
-                          {product.price}
-                        </p>
-
-                        <a
-                          href={whatsappLink}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="flex items-center justify-center gap-2 w-full bg-[#25D366] hover:bg-[#20BD5A] text-white font-semibold text-[14px] py-2.5 rounded-xl transition-colors mt-1"
-                        >
-                          <MessageCircle size={18} fill="currentColor" className="text-white" />
-                          Comprar via WhatsApp
-                        </a>
+                        )}
                       </div>
-                    </div>
-                  </article>
-                )
-              })}
-            </motion.div>
+
+                      <div className="px-5 py-5 border-t border-[#F1F5F9] bg-white flex flex-col flex-1">
+                        <h3 className="text-[15px] font-medium text-[#0F172A] leading-snug line-clamp-2 md:line-clamp-3 mb-3 flex-1" title={product.name}>
+                          {product.name}
+                        </h3>
+
+                        <div className="mt-auto flex flex-col gap-3">
+                          <p className="text-[16px] font-bold text-[#1B8DC0]">
+                            {product.price}
+                          </p>
+
+                          <a
+                            href={whatsappLink}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex items-center justify-center gap-2 w-full bg-[#25D366] hover:bg-[#20BD5A] text-white font-semibold text-[14px] py-2.5 rounded-xl transition-colors mt-1"
+                          >
+                            <MessageCircle size={18} fill="currentColor" className="text-white" />
+                            Comprar via WhatsApp
+                          </a>
+                        </div>
+                      </div>
+                    </article>
+                  )
+                })}
+              </motion.div>
+            )}
           </div>
         </section>
       </main>

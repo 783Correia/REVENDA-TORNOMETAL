@@ -1,68 +1,61 @@
 "use client"
 
+import { useEffect, useState } from "react"
+import Image from "next/image"
 import { motion } from "framer-motion"
 import { fadeUp } from "@/lib/animations"
 import { WHATSAPP_URL } from "@/lib/constants"
-import produtosExtraidos from "../../produtos_extraidos.json"
+import { supabase } from "@/lib/supabase"
 import { ImagePlaceholder } from "@/components/ImagePlaceholder"
 
-interface StoreProductFromJson {
+interface CarouselProduct {
     name: string
-    price: string
-    link: string
+    category: string
+    image?: string
 }
-
-type Category =
-    | "Dosadores"
-    | "Condutores"
-    | "Bocais"
-    | "Buchas"
-    | "Revestimentos"
-    | "Mangotes"
-    | "Telescópios"
-
-interface Product {
-    name: string
-    category: Category
-    link: string
-}
-
-const jsonProducts: StoreProductFromJson[] = produtosExtraidos as StoreProductFromJson[]
-
-function getCategoryForProduct(name: string): Category | null {
-    const lower = name.toLowerCase()
-    if (lower.includes("dosador")) return "Dosadores"
-    if (lower.includes("condutor")) return "Condutores"
-    if (lower.includes("bocal") || lower.includes("bocais")) return "Bocais"
-    if (lower.includes("bucha")) return "Buchas"
-    if (lower.includes("revestimento")) return "Revestimentos"
-    if (lower.includes("mangote")) return "Mangotes"
-    if (lower.includes("telescópio") || lower.includes("telescopio")) return "Telescópios"
-    return null
-}
-
-// Seleciona um subconjunto de produtos do JSON para destacar no carrossel
-const featuredFromJson: Product[] = jsonProducts
-    .map((item) => {
-        const category = getCategoryForProduct(item.name)
-        if (!category) return null
-        return {
-            name: item.name,
-            category,
-            link: item.link,
-        }
-    })
-    .filter((item): item is Product => item !== null)
-    .slice(0, 11)
-
-const products: Product[] = featuredFromJson
-
-// Get unique categories for filter chips
-const categories = Array.from(new Set(products.map((p) => p.category)))
 
 export function ProductCarousel() {
+    const [products, setProducts] = useState<CarouselProduct[]>([])
+    const [categories, setCategories] = useState<string[]>([])
+
+    useEffect(() => {
+        async function loadFeatured() {
+            try {
+                const { data, error } = await supabase
+                    .from("products")
+                    .select(`
+                        name,
+                        product_images ( src ),
+                        categories ( name )
+                    `)
+                    .eq("status", "publish")
+                    .limit(20)
+
+                if (error) throw error
+
+                if (data) {
+                    const mapped: CarouselProduct[] = data.map((item: any) => ({
+                        name: item.name,
+                        category: item.categories?.name || "Outros",
+                        image: item.product_images?.[0]?.src || undefined,
+                    }))
+                    setProducts(mapped)
+
+                    const uniqueCats = Array.from(new Set(mapped.map(p => p.category))).sort()
+                    setCategories(uniqueCats)
+                }
+            } catch (err) {
+                console.error("Error loading featured products:", err)
+            }
+        }
+
+        loadFeatured()
+    }, [])
+
     // Duplicate products for seamless infinite scroll
     const duplicatedProducts = [...products, ...products]
+
+    if (products.length === 0) return null
 
     return (
         <section id="categorias" className="bg-[#F7F8FA] py-16 md:py-24 overflow-hidden">
@@ -107,7 +100,7 @@ export function ProductCarousel() {
                         </span>
                     ))}
                     <span className="bg-[#113d5e] text-white rounded-lg px-4 py-2 text-[13px] font-medium">
-                        +20 categorias
+                        +{Math.max(0, categories.length)} categorias
                     </span>
                 </motion.div>
             </div>
@@ -169,14 +162,26 @@ export function ProductCarousel() {
     )
 }
 
-function ProductCard({ product }: { product: Product }) {
+function ProductCard({ product }: { product: CarouselProduct }) {
     return (
         <div className="flex-shrink-0 w-[220px] md:w-[260px] group">
             <div className="rounded-xl overflow-hidden bg-white border border-[#E2E8F0] shadow-sm transition-all duration-300 hover:shadow-md hover:border-[#1B8DC0]/30 hover:-translate-y-1">
-                <ImagePlaceholder
-                    label={product.name}
-                    className="aspect-[4/3] sm:aspect-square w-full"
-                />
+                {product.image ? (
+                    <div className="relative aspect-[4/3] sm:aspect-square w-full bg-[#f8fafc]">
+                        <Image
+                            src={product.image}
+                            alt={product.name}
+                            fill
+                            className="object-contain p-3 mix-blend-multiply"
+                            sizes="260px"
+                        />
+                    </div>
+                ) : (
+                    <ImagePlaceholder
+                        label={product.name}
+                        className="aspect-[4/3] sm:aspect-square w-full"
+                    />
+                )}
                 <div className="px-4 py-3 border-t border-[#F1F5F9] relative z-20 bg-white">
                     <p className="text-[13px] font-medium text-[#0F172A] truncate">
                         {product.name}

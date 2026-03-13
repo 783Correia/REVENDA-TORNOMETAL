@@ -1,4 +1,4 @@
-\"use client\"
+"use client"
 
 import { useMemo, useState } from "react"
 import { Navbar } from "@/components/Navbar"
@@ -25,9 +25,7 @@ function getCategoryFromName(name: string): string {
 const categories = [
   ALL_CATEGORIES_LABEL,
   ...Array.from(
-    new Set(
-      storeProducts.map((product) => getCategoryFromName(product.name))
-    )
+    new Set(storeProducts.map((product) => getCategoryFromName(product.name)))
   ),
 ]
 

@@ -2,8 +2,16 @@
 
 import { motion } from "framer-motion"
 import Image from "next/image"
+import Link from "next/link"
 import { fadeUp } from "@/lib/animations"
 import { WHATSAPP_URL } from "@/lib/constants"
+import produtosExtraidos from "../../produtos_extraidos.json"
+
+interface StoreProductFromJson {
+    name: string
+    price: string
+    link: string
+}
 
 interface Product {
     name: string
@@ -12,19 +20,19 @@ interface Product {
     ref?: string
 }
 
-const products: Product[] = [
-    { name: "Condutor Vence Tudo", category: "Condutor", image: "/products/condutor-vence-tudo.webp", ref: "900100091" },
-    { name: "Dosador de Adubo Universal", category: "Dosador", image: "/products/dosador-adubo.png" },
-    { name: "Engrenagem 6-Z Semeato", category: "Engrenagem", image: "/products/engrenagem-6z.png", ref: "35050005" },
-    { name: "Condutor Semeato", category: "Condutor", image: "/products/condutor-semeato-1.webp", ref: "61070014" },
-    { name: "Revestimento Dosador", category: "Revestimento", image: "/products/revestimento-dosador.png" },
-    { name: "Telescópio 5 Estágios", category: "Telescópio", image: "/products/telescopio-semeato.webp", ref: "15075602" },
-    { name: "Condutor Semeato", category: "Condutor", image: "/products/condutor-semeato-2.webp", ref: "70080006" },
-    { name: "Condutor Semeato", category: "Condutor", image: "/products/condutor-semeato-3.webp", ref: "56020072" },
-    { name: "Condutor de Semente", category: "Condutor", image: "/products/condutor-semeato-4.webp", ref: "28460049" },
-    { name: "Condutor Curvo Semeato", category: "Condutor", image: "/products/condutor-curvo.webp", ref: "37090001" },
-    { name: "Condutor Semeato", category: "Condutor", image: "/products/condutor-semeato-5.webp", ref: "15070025" },
-]
+const jsonProducts: StoreProductFromJson[] = produtosExtraidos as StoreProductFromJson[]
+
+// Seleciona um subconjunto de produtos do JSON para destacar no carrossel
+const featuredFromJson: Product[] = jsonProducts.slice(0, 11).map((item) => {
+    const firstWord = item.name.trim().split(" ")[0]
+    return {
+        name: item.name,
+        category: firstWord,
+        image: "/products/placeholder.png",
+    }
+})
+
+const products: Product[] = featuredFromJson
 
 // Get unique categories for filter chips
 const categories = Array.from(new Set(products.map((p) => p.category)))
@@ -142,7 +150,11 @@ export function ProductCarousel() {
 
 function ProductCard({ product }: { product: Product }) {
     return (
-        <div className="flex-shrink-0 w-[220px] md:w-[260px] group">
+        <Link
+            href="/produtos"
+            aria-label={`Ver catálogo completo a partir do produto ${product.name}`}
+            className="flex-shrink-0 w-[220px] md:w-[260px] group"
+        >
             <div className="rounded-xl overflow-hidden bg-white border border-[#E2E8F0] shadow-sm transition-all duration-300 hover:shadow-md hover:border-[#1B8DC0]/30 hover:-translate-y-1">
                 <div className="relative aspect-[4/3] sm:aspect-square w-full bg-white overflow-hidden flex items-center justify-center">
                     <div className="relative w-[80%] h-[80%]">
@@ -154,7 +166,6 @@ function ProductCard({ product }: { product: Product }) {
                             className="object-contain transition-transform duration-500 group-hover:scale-110 drop-shadow-sm"
                         />
                     </div>
-                    {/* subtle gradient overlay to ensure badge readability if needed */}
                     <div className="absolute inset-0 bg-gradient-to-b from-black/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
 
                     <span className="absolute top-3 left-3 text-[10px] font-semibold uppercase tracking-wider bg-white/90 backdrop-blur-sm shadow-sm text-[#1B8DC0] px-2 py-1 rounded-md z-10">
@@ -165,13 +176,8 @@ function ProductCard({ product }: { product: Product }) {
                     <p className="text-[13px] font-medium text-[#0F172A] truncate">
                         {product.name}
                     </p>
-                    {product.ref && (
-                        <p className="text-[11px] text-[#94A3B8] mt-0.5">
-                            Ref: {product.ref}
-                        </p>
-                    )}
                 </div>
             </div>
-        </div>
+        </Link>
     )
 }

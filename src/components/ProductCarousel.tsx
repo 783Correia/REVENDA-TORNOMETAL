@@ -1,11 +1,10 @@
 "use client"
 
 import { motion } from "framer-motion"
-import Image from "next/image"
-import Link from "next/link"
 import { fadeUp } from "@/lib/animations"
 import { WHATSAPP_URL } from "@/lib/constants"
 import produtosExtraidos from "../../produtos_extraidos.json"
+import { ImagePlaceholder } from "@/components/ImagePlaceholder"
 
 interface StoreProductFromJson {
     name: string
@@ -16,8 +15,7 @@ interface StoreProductFromJson {
 interface Product {
     name: string
     category: string
-    image: string
-    ref?: string
+    link: string
 }
 
 const jsonProducts: StoreProductFromJson[] = produtosExtraidos as StoreProductFromJson[]
@@ -28,7 +26,7 @@ const featuredFromJson: Product[] = jsonProducts.slice(0, 11).map((item) => {
     return {
         name: item.name,
         category: firstWord,
-        image: "/products/placeholder.png",
+        link: item.link,
     }
 })
 
@@ -132,12 +130,10 @@ export function ProductCarousel() {
                         </svg>
                     </a>
                     <a
-                        href="https://tornometalevertonlopes.com.br/loja/"
-                        target="_blank"
-                        rel="noopener noreferrer"
+                        href="/produtos"
                         className="inline-flex items-center gap-2 border border-[#E2E8F0] text-[#334155] px-5 py-3 rounded-lg text-sm font-medium transition-all duration-200 hover:bg-[#113d5e] hover:text-white hover:border-[#113d5e]"
                     >
-                        Ver Loja Completa
+                        Ver catálogo completo
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                             <path d="M5 12h14M12 5l7 7-7 7" />
                         </svg>
@@ -150,34 +146,27 @@ export function ProductCarousel() {
 
 function ProductCard({ product }: { product: Product }) {
     return (
-        <Link
-            href="/produtos"
-            aria-label={`Ver catálogo completo a partir do produto ${product.name}`}
+        <a
+            href={product.link}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={`Ver detalhes do produto ${product.name} na loja Torno Metal`}
             className="flex-shrink-0 w-[220px] md:w-[260px] group"
         >
             <div className="rounded-xl overflow-hidden bg-white border border-[#E2E8F0] shadow-sm transition-all duration-300 hover:shadow-md hover:border-[#1B8DC0]/30 hover:-translate-y-1">
-                <div className="relative aspect-[4/3] sm:aspect-square w-full bg-white overflow-hidden flex items-center justify-center">
-                    <div className="relative w-[80%] h-[80%]">
-                        <Image
-                            src={product.image}
-                            alt={product.name}
-                            fill
-                            sizes="(max-width: 768px) 200px, 240px"
-                            className="object-contain transition-transform duration-500 group-hover:scale-110 drop-shadow-sm"
-                        />
-                    </div>
-                    <div className="absolute inset-0 bg-gradient-to-b from-black/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
-
-                    <span className="absolute top-3 left-3 text-[10px] font-semibold uppercase tracking-wider bg-white/90 backdrop-blur-sm shadow-sm text-[#1B8DC0] px-2 py-1 rounded-md z-10">
-                        {product.category}
-                    </span>
-                </div>
+                <ImagePlaceholder
+                    label={product.name}
+                    className="aspect-[4/3] sm:aspect-square w-full"
+                />
                 <div className="px-4 py-3 border-t border-[#F1F5F9] relative z-20 bg-white">
                     <p className="text-[13px] font-medium text-[#0F172A] truncate">
                         {product.name}
                     </p>
+                    <p className="text-[11px] text-[#1B8DC0] font-semibold mt-1">
+                        {product.category}
+                    </p>
                 </div>
             </div>
-        </Link>
+        </a>
     )
 }

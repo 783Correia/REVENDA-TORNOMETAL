@@ -8,7 +8,6 @@ import { WHATSAPP_URL } from "@/lib/constants"
 const navLinks = [
   { label: "Sobre", href: "#sobre" },
   { label: "Benefícios", href: "#beneficios" },
-  { label: "Catálogo", href: "#categorias" },
   { label: "Produtos", href: "/produtos" },
   { label: "Depoimentos", href: "#depoimentos" },
   { label: "Contato", href: "#footer" },

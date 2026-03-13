@@ -84,7 +84,7 @@ export default function ProdutosPage() {
 
               <p className="mt-3 text-[#475569] text-[15px] max-w-[620px]">
                 Todos os itens do catálogo extraídos da loja Torno Metal. Filtre por categoria
-                e clique para abrir o produto direto na loja.
+                e navegue pelo catálogo completo aqui na página.
               </p>
             </motion.div>
 
@@ -135,27 +135,6 @@ export default function ProdutosPage() {
                     <p className="text-[13px] font-semibold text-[#1B8DC0]">
                       {product.price}
                     </p>
-                    <a
-                      href={product.link}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="mt-2 inline-flex items-center justify-center gap-2 text-[12px] font-semibold text-white bg-[#113d5e] rounded-lg px-3 py-2 transition-colors duration-200 hover:bg-[#0c2f4a]"
-                    >
-                      Ver na loja
-                      <svg
-                        width="12"
-                        height="12"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        aria-hidden="true"
-                      >
-                        <path d="M5 12h14M12 5l7 7-7 7" />
-                      </svg>
-                    </a>
                   </div>
                 </article>
               ))}

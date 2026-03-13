@@ -171,13 +171,7 @@ export function ProductCarousel() {
 
 function ProductCard({ product }: { product: Product }) {
     return (
-        <a
-            href={product.link}
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label={`Ver detalhes do produto ${product.name} na loja Torno Metal`}
-            className="flex-shrink-0 w-[220px] md:w-[260px] group"
-        >
+        <div className="flex-shrink-0 w-[220px] md:w-[260px] group">
             <div className="rounded-xl overflow-hidden bg-white border border-[#E2E8F0] shadow-sm transition-all duration-300 hover:shadow-md hover:border-[#1B8DC0]/30 hover:-translate-y-1">
                 <ImagePlaceholder
                     label={product.name}
@@ -192,6 +186,6 @@ function ProductCard({ product }: { product: Product }) {
                     </p>
                 </div>
             </div>
-        </a>
+        </div>
     )
 }

@@ -12,23 +12,48 @@ interface StoreProductFromJson {
     link: string
 }
 
+type Category =
+    | "Dosadores"
+    | "Condutores"
+    | "Bocais"
+    | "Buchas"
+    | "Revestimentos"
+    | "Mangotes"
+    | "Telescópios"
+
 interface Product {
     name: string
-    category: string
+    category: Category
     link: string
 }
 
 const jsonProducts: StoreProductFromJson[] = produtosExtraidos as StoreProductFromJson[]
 
+function getCategoryForProduct(name: string): Category | null {
+    const lower = name.toLowerCase()
+    if (lower.includes("dosador")) return "Dosadores"
+    if (lower.includes("condutor")) return "Condutores"
+    if (lower.includes("bocal") || lower.includes("bocais")) return "Bocais"
+    if (lower.includes("bucha")) return "Buchas"
+    if (lower.includes("revestimento")) return "Revestimentos"
+    if (lower.includes("mangote")) return "Mangotes"
+    if (lower.includes("telescópio") || lower.includes("telescopio")) return "Telescópios"
+    return null
+}
+
 // Seleciona um subconjunto de produtos do JSON para destacar no carrossel
-const featuredFromJson: Product[] = jsonProducts.slice(0, 11).map((item) => {
-    const firstWord = item.name.trim().split(" ")[0]
-    return {
-        name: item.name,
-        category: firstWord,
-        link: item.link,
-    }
-})
+const featuredFromJson: Product[] = jsonProducts
+    .map((item) => {
+        const category = getCategoryForProduct(item.name)
+        if (!category) return null
+        return {
+            name: item.name,
+            category,
+            link: item.link,
+        }
+    })
+    .filter((item): item is Product => item !== null)
+    .slice(0, 11)
 
 const products: Product[] = featuredFromJson
 

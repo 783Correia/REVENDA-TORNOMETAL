@@ -16,16 +16,36 @@ interface StoreProduct {
 
 const storeProducts: StoreProduct[] = produtosExtraidos as StoreProduct[]
 
-const ALL_CATEGORIES_LABEL = "Todas as categorias"
+const ALL_CATEGORIES_LABEL = "Todos os produtos"
 
-function getCategoryFromName(name: string): string {
-  return name.trim().split(" ")[0]
+const CATEGORY_LABELS = [
+  "Dosadores",
+  "Condutores",
+  "Bocais",
+  "Buchas",
+  "Revestimentos",
+  "Mangotes",
+  "Telescópios",
+] as const
+
+type Category = (typeof CATEGORY_LABELS)[number]
+
+function getCategoryForProduct(product: StoreProduct): Category | null {
+  const name = product.name.toLowerCase()
+  if (name.includes("dosador")) return "Dosadores"
+  if (name.includes("condutor")) return "Condutores"
+  if (name.includes("bocal") || name.includes("bocais")) return "Bocais"
+  if (name.includes("bucha")) return "Buchas"
+  if (name.includes("revestimento")) return "Revestimentos"
+  if (name.includes("mangote")) return "Mangotes"
+  if (name.includes("telescópio") || name.includes("telescopio")) return "Telescópios"
+  return null
 }
 
-const categories = [
+const categories: string[] = [
   ALL_CATEGORIES_LABEL,
-  ...Array.from(
-    new Set(storeProducts.map((product) => getCategoryFromName(product.name)))
+  ...CATEGORY_LABELS.filter((category) =>
+    storeProducts.some((product) => getCategoryForProduct(product) === category)
   ),
 ]
 
@@ -35,7 +55,7 @@ export default function ProdutosPage() {
   const filteredProducts = useMemo(() => {
     if (activeCategory === ALL_CATEGORIES_LABEL) return storeProducts
     return storeProducts.filter(
-      (product) => getCategoryFromName(product.name) === activeCategory
+      (product) => getCategoryForProduct(product) === activeCategory
     )
   }, [activeCategory])
 

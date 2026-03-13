@@ -2,10 +2,9 @@ import Image from "next/image"
 import { WHATSAPP_URL, WHATSAPP_NUMBER, INSTAGRAM_URL, INSTAGRAM_HANDLE, WEBSITE_URL, COMPANY_LOCATION } from "@/lib/constants"
 
 const navLinks = [
-  { label: "Sobre", href: "#sobre" },
-  { label: "Benefícios", href: "#beneficios" },
-  { label: "Catálogo", href: "#categorias" },
-  { label: "Depoimentos", href: "#depoimentos" },
+  { label: "Sobre", href: "/#sobre" },
+  { label: "Benefícios", href: "/#beneficios" },
+  { label: "Catálogo", href: "/produtos" },
 ]
 
 export function Footer() {

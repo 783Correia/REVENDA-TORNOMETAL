@@ -5,13 +5,12 @@ import Image from "next/image"
 import { Menu, X } from "lucide-react"
 import { WHATSAPP_URL } from "@/lib/constants"
 
-import { Info, Star, Package, MessageSquareHeart } from "lucide-react"
+import { Info, Star, Package } from "lucide-react"
 
 const navLinks = [
-  { label: "Sobre", href: "#sobre", icon: <Info size={16} /> },
-  { label: "Benefícios", href: "#beneficios", icon: <Star size={16} /> },
+  { label: "Sobre", href: "/#sobre", icon: <Info size={16} /> },
+  { label: "Benefícios", href: "/#beneficios", icon: <Star size={16} /> },
   { label: "Produtos", href: "/produtos", icon: <Package size={16} /> },
-  { label: "Depoimentos", href: "#depoimentos", icon: <MessageSquareHeart size={16} /> },
 ]
 
 export function Navbar() {
@@ -32,7 +31,7 @@ export function Navbar() {
         }`}
     >
       <div className="max-w-[1120px] h-full w-full mx-auto px-5 flex items-center justify-between">
-        <a href="#" aria-label="Torno Metal Everton Lopes — Início">
+        <a href="/" aria-label="Torno Metal Everton Lopes — Início">
           <Image
             src="/Logo_Torno_Metal.png"
             alt="Torno Metal Everton Lopes"

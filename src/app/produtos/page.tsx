@@ -62,7 +62,9 @@ export default function ProdutosPage() {
               name: item.name,
               price: formattedPrice,
               link: `/produtos/${item.slug || item.id}`, // the actual system might not use this link, but for schema consistency
-              image: item.product_images?.[0]?.src || undefined,
+              image: Array.isArray(item.product_images) && item.product_images.length > 0
+                ? item.product_images[0].src
+                : undefined,
               categories: item.categories ? [item.categories.name] : []
             }
           })

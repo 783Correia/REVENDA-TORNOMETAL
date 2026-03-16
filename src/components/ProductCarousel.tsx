@@ -37,7 +37,9 @@ export function ProductCarousel() {
                     const mapped: CarouselProduct[] = data.map((item: any) => ({
                         name: item.name,
                         category: item.categories?.name || "Outros",
-                        image: item.product_images?.[0]?.src || undefined,
+                        image: Array.isArray(item.product_images) && item.product_images.length > 0
+                            ? item.product_images[0].src
+                            : undefined,
                     }))
                     setProducts(mapped)
 

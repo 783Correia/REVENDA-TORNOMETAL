@@ -19,8 +19,16 @@ interface StoreProduct {
   categories?: string[]
 }
 
-const ALL_CATEGORIES_LABEL = "Todos os produtos"
+interface SupabaseProductResponse {
+  id: number;
+  name: string;
+  price: string;
+  slug?: string;
+  product_images?: { src: string }[];
+  categories?: { name: string } | { name: string }[];
+}
 
+const ALL_CATEGORIES_LABEL = "Todos os produtos"
 
 
 function getCategoryForProduct(product: StoreProduct): string[] {
@@ -50,13 +58,22 @@ export default function ProdutosPage() {
         if (error) throw error
 
         if (data) {
-          const mappedProducts: StoreProduct[] = data.map((item: any) => {
+          const mappedProducts: StoreProduct[] = data.map((item: SupabaseProductResponse) => {
             // Price formatting
             const priceVal = parseFloat(item.price) || 0
             const formattedPrice = new Intl.NumberFormat("pt-BR", {
               style: "currency",
               currency: "BRL"
             }).format(priceVal)
+
+            let categoryName = "Outros"
+            if (item.categories) {
+              if (Array.isArray(item.categories)) {
+                categoryName = item.categories[0]?.name || "Outros"
+              } else {
+                categoryName = item.categories.name || "Outros"
+              }
+            }
 
             return {
               name: item.name,
@@ -65,7 +82,7 @@ export default function ProdutosPage() {
               image: Array.isArray(item.product_images) && item.product_images.length > 0
                 ? item.product_images[0].src
                 : undefined,
-              categories: item.categories ? [item.categories.name] : []
+              categories: [categoryName]
             }
           })
           setStoreProducts(mappedProducts)

@@ -14,6 +14,12 @@ interface CarouselProduct {
     image?: string
 }
 
+interface SupabaseCarouselResponse {
+    name: string;
+    product_images?: { src: string }[];
+    categories?: { name: string } | { name: string }[];
+}
+
 export function ProductCarousel() {
     const [products, setProducts] = useState<CarouselProduct[]>([])
     const [categories, setCategories] = useState<string[]>([])
@@ -34,13 +40,24 @@ export function ProductCarousel() {
                 if (error) throw error
 
                 if (data) {
-                    const mapped: CarouselProduct[] = data.map((item: any) => ({
-                        name: item.name,
-                        category: item.categories?.name || "Outros",
-                        image: Array.isArray(item.product_images) && item.product_images.length > 0
-                            ? item.product_images[0].src
-                            : undefined,
-                    }))
+                    const mapped: CarouselProduct[] = data.map((item: SupabaseCarouselResponse) => {
+                        let categoryName = "Outros"
+                        if (item.categories) {
+                            if (Array.isArray(item.categories)) {
+                                categoryName = item.categories[0]?.name || "Outros"
+                            } else {
+                                categoryName = item.categories.name || "Outros"
+                            }
+                        }
+
+                        return {
+                            name: item.name,
+                            category: categoryName,
+                            image: Array.isArray(item.product_images) && item.product_images.length > 0
+                                ? item.product_images[0].src
+                                : undefined,
+                        }
+                    })
                     setProducts(mapped)
 
                     const uniqueCats = Array.from(new Set(mapped.map(p => p.category))).sort()

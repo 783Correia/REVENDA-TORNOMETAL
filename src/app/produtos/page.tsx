@@ -166,7 +166,7 @@ export default function ProdutosPage() {
                 animate="visible"
               >
                 {filteredProducts.map((product) => {
-                  const whatsappMessage = encodeURIComponent(`Olá, gostei do produto: ${product.name} no valor de ${product.price}. Gostaria de mais informações.`);
+                  const whatsappMessage = encodeURIComponent(`Olá, gostei do produto: ${product.name}. Gostaria de mais informações.`);
                   const whatsappLink = `${WHATSAPP_URL}?text=${whatsappMessage}`;
 
                   return (
@@ -199,9 +199,6 @@ export default function ProdutosPage() {
                         </h3>
 
                         <div className="mt-auto flex flex-col gap-3">
-                          <p className="text-[16px] font-bold text-[#1B8DC0]">
-                            {product.price}
-                          </p>
 
                           <a
                             href={whatsappLink}

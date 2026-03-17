@@ -1,36 +1,7 @@
-import { createClient, SupabaseClient } from '@supabase/supabase-js'
+import { createClient } from '@supabase/supabase-js'
 
-let _client: SupabaseClient | null = null
+const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://lozduuvplbfiduaigjth.supabase.co'
+const SUPABASE_ANON_KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxvemR1dXZwbGJmaWR1YWlnanRoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM0MTU4NDUsImV4cCI6MjA4ODk5MTg0NX0.J7i39lHSeWdC1y9G1o7cW4UKpfOcVdZ3IRFjhoSX1Tw'
 
-function getSupabaseClient(): SupabaseClient {
-  if (_client) return _client
+export const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
 
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL
-  const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
-
-  if (!url || !key) {
-    // During build / SSG the env vars may not exist.
-    // Return a lightweight stub whose queries resolve to empty data
-    // so the build completes without errors.
-    return {
-      from: () => ({
-        select: () => ({
-          eq: () => ({
-            limit: () => Promise.resolve({ data: [], error: null }),
-          }),
-        }),
-      }),
-    } as unknown as SupabaseClient
-  }
-
-  _client = createClient(url, key)
-  return _client
-}
-
-export const supabase = new Proxy({} as SupabaseClient, {
-  get(_target, prop, receiver) {
-    const client = getSupabaseClient()
-    const value = Reflect.get(client, prop, receiver)
-    return typeof value === 'function' ? value.bind(client) : value
-  },
-})

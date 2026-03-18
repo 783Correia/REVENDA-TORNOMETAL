@@ -67,4 +67,43 @@ html {
   .animate-marquee {
     animation: marquee 25s linear infinite;
   }
+
+  /* Infinite Carousel Animations */
+  @keyframes scrollLeft {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(calc(-50% - 1rem)); } 
+  }
+
+  @keyframes scrollRight {
+    0% { transform: translateX(calc(-50% - 1rem)); }
+    100% { transform: translateX(0); }
+  }
+
+  .carousel-track {
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+    /* Add gradient masks for smooth fade in/out at edges */
+    mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+    -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+  }
+
+  /* Pause animations on hover */
+  .carousel-track:hover .carousel-slide {
+    animation-play-state: paused;
+  }
+
+  .carousel-slide {
+    display: flex;
+    gap: 1rem;
+    width: max-content;
+  }
+
+  .animate-scroll-left {
+    animation: scrollLeft 40s linear infinite;
+  }
+
+  .animate-scroll-right {
+    animation: scrollRight 40s linear infinite;
+  }
 }

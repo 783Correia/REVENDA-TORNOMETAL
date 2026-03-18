@@ -1,22 +1,15 @@
 import Image from "next/image"
-import { WHATSAPP_URL } from "@/lib/constants"
+import { WHATSAPP_URL, WHATSAPP_NUMBER, INSTAGRAM_URL, INSTAGRAM_HANDLE, WEBSITE_URL, COMPANY_LOCATION } from "@/lib/constants"
 
 const navLinks = [
-  { label: "Sobre", href: "#sobre" },
-  { label: "Benefícios", href: "#beneficios" },
-  { label: "Catálogo", href: "#categorias" },
-  { label: "Depoimentos", href: "#depoimentos" },
-]
-
-const contactLinks = [
-  { label: "WhatsApp: [NÚMERO]" },
-  { label: "E-mail: [EMAIL]" },
-  { label: "Instagram: @[PERFIL]" },
+  { label: "Sobre", href: "/#sobre" },
+  { label: "Benefícios", href: "/#beneficios" },
+  { label: "Catálogo", href: "/produtos" },
 ]
 
 export function Footer() {
   return (
-    <footer id="footer" className="bg-[#0A1628] border-t border-white/[0.06]">
+    <footer id="footer" className="bg-[#113d5e] border-t border-white/[0.06]">
       <div className="max-w-[1120px] mx-auto px-5 pt-14 pb-8">
         <div className="grid md:grid-cols-4 gap-10 pb-10 border-b border-white/[0.06]">
           {/* Brand */}
@@ -29,11 +22,11 @@ export function Footer() {
               className="h-9 w-auto"
             />
             <p className="text-white/30 text-[13px] mt-3 max-w-[280px] leading-relaxed">
-              Fabricante de peças para plantadeiras. Atendendo revendas e oficinas em todo o Brasil.
+              Fabricante de peças para plantadeiras há mais de 25 anos. Atendendo revendas e oficinas em todo o Brasil.
             </p>
             <p className="text-white/20 text-[12px] mt-3 flex items-center gap-1.5">
               <span className="w-1 h-1 rounded-full bg-[#2BAAD4] inline-block" />
-              Lagoa Vermelha, RS
+              {COMPANY_LOCATION}
             </p>
           </div>
 
@@ -69,21 +62,40 @@ export function Footer() {
               Contato
             </span>
             <div className="flex flex-col gap-2">
-              {contactLinks.map((item) => (
-                <p key={item.label} className="text-white/30 text-[13px]">
-                  {item.label}
-                </p>
-              ))}
+              <a
+                href={WHATSAPP_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-white/30 hover:text-white/60 text-[13px] transition-colors duration-200"
+              >
+                WhatsApp: {WHATSAPP_NUMBER}
+              </a>
+              <a
+                href={INSTAGRAM_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-white/30 hover:text-white/60 text-[13px] transition-colors duration-200"
+              >
+                Instagram: {INSTAGRAM_HANDLE}
+              </a>
+              <a
+                href={WEBSITE_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-white/30 hover:text-white/60 text-[13px] transition-colors duration-200"
+              >
+                Loja: tornometalevertonlopes.com.br
+              </a>
             </div>
           </div>
         </div>
 
         <div className="pt-6 flex flex-col md:flex-row items-center justify-between gap-2">
           <p className="text-white/15 text-[12px]">
-            © 2025 Torno Metal Everton Lopes. Todos os direitos reservados.
+            © {new Date().getFullYear()} Torno Metal Everton Lopes. Todos os direitos reservados.
           </p>
           <p className="text-white/15 text-[12px]">
-            CNPJ: XX.XXX.XXX/XXXX-XX
+            {COMPANY_LOCATION}
           </p>
         </div>
       </div>

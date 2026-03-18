@@ -35,9 +35,9 @@ export function Navbar() {
           <Image
             src="/Logo_Torno_Metal.png"
             alt="Torno Metal Everton Lopes"
-            width={140}
-            height={40}
-            className="h-9 w-auto"
+            width={200}
+            height={56}
+            className="h-12 md:h-14 w-auto"
             priority
           />
         </a>

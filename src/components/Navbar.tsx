@@ -1,7 +1,6 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import Image from "next/image"
 import { Menu, X } from "lucide-react"
 import { WHATSAPP_URL } from "@/lib/constants"
 
@@ -32,13 +31,10 @@ export function Navbar() {
     >
       <div className="max-w-[1120px] h-full w-full mx-auto px-5 flex items-center justify-between">
         <a href="/" aria-label="Torno Metal Everton Lopes — Início">
-          <Image
+          <img
             src="/Logo_Torno_Metal.png"
             alt="Torno Metal Everton Lopes"
-            width={874}
-            height={938}
             className="h-12 md:h-14 w-auto"
-            priority
           />
         </a>
 

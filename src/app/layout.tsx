@@ -22,6 +22,7 @@ export default function RootLayout({
   return (
     <html lang="pt-BR">
       <head>
+        <Script src="https://t.contentsquare.net/uxa/258ba3bfad18a.js" strategy="afterInteractive" />
         <Script id="meta-pixel" strategy="afterInteractive">
           {`
             !function(f,b,e,v,n,t,s)

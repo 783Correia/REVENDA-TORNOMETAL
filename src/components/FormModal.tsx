@@ -59,10 +59,11 @@ export function FormModal({ open, onClose }: Props) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),
       })
-      if (!res.ok) throw new Error("Erro ao enviar")
+      const data = await res.json()
+      if (!res.ok) throw new Error(data.error || "Erro ao enviar")
       router.push("/obrigado")
-    } catch {
-      setError("Ops, algo deu errado. Tente novamente.")
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Erro desconhecido")
       setLoading(false)
     }
   }

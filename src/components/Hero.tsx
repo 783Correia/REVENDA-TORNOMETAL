@@ -1,10 +1,13 @@
 "use client"
 
 import { motion } from "framer-motion"
-import { WHATSAPP_URL } from "@/lib/constants"
 import { fadeUp, stagger } from "@/lib/animations"
 
-export function Hero() {
+interface Props {
+  onOpenModal: () => void
+}
+
+export function Hero({ onOpenModal }: Props) {
   return (
     <section className="relative overflow-hidden bg-[#113d5e]">
       {/* Video Background */}
@@ -66,17 +69,15 @@ export function Hero() {
         {/* Buttons and Icon (Matching Reference) */}
         <motion.div className="mt-10 md:mt-12 flex gap-4 md:gap-6 flex-wrap justify-center items-center" variants={fadeUp}>
           <div className="flex items-center gap-4">
-            <a
-              href={WHATSAPP_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center justify-center rounded-full bg-gradient-to-r from-[#00f2fe] to-[#4facfe] hover:from-[#4facfe] hover:to-[#00f2fe] px-10 py-5 text-[16px] font-black italic text-black uppercase transition-all duration-300 hover:scale-[1.02] shadow-[0_0_30px_rgba(0,242,254,0.4)] tracking-wide"
+            <button
+              onClick={onOpenModal}
+              className="inline-flex items-center justify-center rounded-full px-10 py-5 text-[16px] font-black italic text-black uppercase transition-all duration-300 hover:scale-[1.02] shadow-[0_0_30px_rgba(0,242,254,0.4)] tracking-wide"
               style={{
                 background: "linear-gradient(90deg, #00FFcc 0%, #00FF66 100%)",
               }}
             >
               GARANTA SEU ESTOQUE
-            </a>
+            </button>
 
             {/* Circular decorative icon next to button */}
             <a href="#categorias" className="hidden sm:flex relative items-center justify-center w-14 h-14 rounded-full border-2 border-dashed border-[#00FF66]/50 bg-black/20 backdrop-blur-sm group hover:border-[#00FF66] transition-colors cursor-pointer">

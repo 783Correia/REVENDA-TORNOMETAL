@@ -1,5 +1,6 @@
 "use client"
 
+import { useEffect } from "react"
 import Link from "next/link"
 import { motion } from "framer-motion"
 import { Navbar } from "@/components/Navbar"
@@ -7,7 +8,15 @@ import { Footer } from "@/components/Footer"
 import { WHATSAPP_URL } from "@/lib/constants"
 import { fadeUp, stagger } from "@/lib/animations"
 
+declare global {
+  interface Window { fbq?: (...args: unknown[]) => void }
+}
+
 export default function Obrigado() {
+  useEffect(() => {
+    window.fbq?.("track", "Lead")
+  }, [])
+
   return (
     <>
       <Navbar />

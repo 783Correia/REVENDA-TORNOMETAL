@@ -1,6 +1,10 @@
 "use client"
 
 import { useEffect, useRef, useState } from "react"
+
+declare global {
+  interface Window { fbq?: (...args: unknown[]) => void }
+}
 import { AnimatePresence, motion } from "framer-motion"
 import { useRouter } from "next/navigation"
 
@@ -62,6 +66,12 @@ export function FormModal({ open, onClose }: Props) {
       let data: { ok?: boolean; error?: string } = {}
       try { data = await res.json() } catch {}
       if (!res.ok) throw new Error(data.error || `HTTP ${res.status}`)
+      if (typeof window !== "undefined" && window.fbq) {
+        window.fbq("track", "Lead", {
+          content_name: "Formulario Revenda",
+          content_category: "Revenda B2B",
+        })
+      }
       router.push("/obrigado")
     } catch (err) {
       setError(err instanceof Error ? err.message : "Erro desconhecido")

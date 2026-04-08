@@ -1,10 +1,66 @@
 "use client"
 
+import { useState } from "react"
 import { motion } from "framer-motion"
-import { WHATSAPP_URL } from "@/lib/constants"
+import { useRouter } from "next/navigation"
 import { fadeUp } from "@/lib/animations"
 
+declare global {
+  interface Window { fbq?: (...args: unknown[]) => void }
+}
+
+const ESTADOS = [
+  "AC","AL","AP","AM","BA","CE","DF","ES","GO","MA","MT","MS","MG",
+  "PA","PB","PR","PE","PI","RJ","RN","RS","RO","RR","SC","SP","SE","TO",
+]
+
+interface FormData {
+  nome: string
+  empresa: string
+  contato: string
+  email: string
+  estado: string
+}
+
 export function CTAFinal() {
+  const router = useRouter()
+  const [form, setForm] = useState<FormData>({ nome: "", empresa: "", contato: "", email: "", estado: "" })
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState("")
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault()
+    setError("")
+    setLoading(true)
+    try {
+      const res = await fetch("/api/solicitar-orcamento", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      })
+      let data: { ok?: boolean; error?: string } = {}
+      try { data = await res.json() } catch {}
+      if (!res.ok) throw new Error(data.error || `HTTP ${res.status}`)
+      if (typeof window !== "undefined" && window.fbq) {
+        window.fbq("track", "Lead", {
+          content_name: "Formulario Revenda",
+          content_category: "Revenda B2B",
+        })
+      }
+      router.push("/obrigado")
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Erro desconhecido")
+      setLoading(false)
+    }
+  }
+
+  function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) {
+    setForm(prev => ({ ...prev, [e.target.name]: e.target.value }))
+  }
+
+  const inputClass =
+    "w-full rounded-lg border border-[#E2E8F0] bg-white px-4 py-3 text-sm text-[#0F172A] placeholder:text-[#94A3B8] focus:border-[#2BAAD4] focus:outline-none focus:ring-2 focus:ring-[#2BAAD4]/20 transition-all"
+
   return (
     <section className="bg-white py-16 md:py-24 border-t border-[#E2E8F0]">
       <motion.div
@@ -14,37 +70,122 @@ export function CTAFinal() {
         whileInView="visible"
         viewport={{ once: true, margin: "-80px" }}
       >
-        <div className="relative rounded-3xl overflow-hidden p-8 md:p-14 flex flex-col md:flex-row md:items-center md:justify-between gap-8 shadow-[0_10px_40px_-10px_rgba(43,170,212,0.15)] border border-[#2BAAD4]/20 bg-gradient-to-br from-[#F0F9FF]/80 to-white/60 backdrop-blur-xl">
-          {/* Subtle decorative glow */}
+        <div className="relative rounded-3xl overflow-hidden p-8 md:p-14 flex flex-col md:flex-row md:items-start gap-8 md:gap-12 shadow-[0_10px_40px_-10px_rgba(43,170,212,0.15)] border border-[#2BAAD4]/20 bg-gradient-to-br from-[#F0F9FF]/80 to-white/60 backdrop-blur-xl">
+          {/* Decorative glows */}
           <div className="absolute top-0 right-0 w-64 h-64 bg-[#2BAAD4]/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3 pointer-events-none" />
           <div className="absolute bottom-0 left-0 w-40 h-40 bg-[#00FFcc]/5 rounded-full blur-2xl translate-y-1/3 -translate-x-1/4 pointer-events-none" />
 
-          <div className="relative z-10 max-w-[520px]">
+          <div className="relative z-10 max-w-[440px]">
             <h2
               className="font-semibold text-[#0F172A] leading-[1.2]"
               style={{ fontSize: "clamp(22px, 2.8vw, 32px)" }}
             >
               Faça seu primeiro pedido — ou mande a lista do que você já compra em outro lugar.
             </h2>
-
             <p className="mt-4 text-[#475569] text-[15px] leading-relaxed">
-              A gente verifica o que temos em estoque, passa os preços e você
-              decide. Sem compromisso, sem enrolação.
+              A gente verifica o que temos em estoque, passa os preços e você decide. Sem compromisso, sem enrolação.
             </p>
           </div>
 
-          <div className="relative z-10 flex-shrink-0">
-            <a
-              href={WHATSAPP_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 rounded-lg bg-[#25D366] px-6 py-3.5 text-sm font-semibold text-white transition-all duration-200 hover:bg-[#20BD5A]"
-            >
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
-              </svg>
-              Falar no WhatsApp agora
-            </a>
+          {/* Inline form card */}
+          <div className="relative z-10 flex-1 w-full">
+            <div className="bg-white rounded-2xl shadow-[0_4px_24px_-4px_rgba(0,0,0,0.10)] border border-[#E2E8F0] p-6">
+              <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+                <div>
+                  <label className="block text-[11px] font-semibold uppercase tracking-wider text-[#475569] mb-1.5">
+                    Seu nome *
+                  </label>
+                  <input
+                    name="nome"
+                    value={form.nome}
+                    onChange={handleChange}
+                    required
+                    placeholder="Nome completo"
+                    className={inputClass}
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-[11px] font-semibold uppercase tracking-wider text-[#475569] mb-1.5">
+                    Nome da empresa *
+                  </label>
+                  <input
+                    name="empresa"
+                    value={form.empresa}
+                    onChange={handleChange}
+                    required
+                    placeholder="Razão social ou nome fantasia"
+                    className={inputClass}
+                  />
+                </div>
+
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <label className="block text-[11px] font-semibold uppercase tracking-wider text-[#475569] mb-1.5">
+                      Contato (WhatsApp) *
+                    </label>
+                    <input
+                      name="contato"
+                      value={form.contato}
+                      onChange={handleChange}
+                      required
+                      placeholder="(00) 00000-0000"
+                      type="tel"
+                      className={inputClass}
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-[11px] font-semibold uppercase tracking-wider text-[#475569] mb-1.5">
+                      Estado *
+                    </label>
+                    <select
+                      name="estado"
+                      value={form.estado}
+                      onChange={handleChange}
+                      required
+                      className={inputClass}
+                    >
+                      <option value="">UF</option>
+                      {ESTADOS.map(uf => (
+                        <option key={uf} value={uf}>{uf}</option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-[11px] font-semibold uppercase tracking-wider text-[#475569] mb-1.5">
+                    E-mail *
+                  </label>
+                  <input
+                    name="email"
+                    value={form.email}
+                    onChange={handleChange}
+                    required
+                    type="email"
+                    placeholder="seu@email.com.br"
+                    className={inputClass}
+                  />
+                </div>
+
+                {error && (
+                  <p className="text-sm text-red-500 text-center">{error}</p>
+                )}
+
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="mt-1 w-full rounded-lg py-3.5 text-sm font-bold uppercase tracking-wide text-black transition-all duration-200 hover:scale-[1.02] active:scale-[0.98] disabled:opacity-60 disabled:cursor-not-allowed"
+                  style={{ background: loading ? "#94A3B8" : "linear-gradient(90deg, #00FFcc 0%, #00FF66 100%)" }}
+                >
+                  {loading ? "Enviando…" : "Solicitar Orçamento →"}
+                </button>
+
+                <p className="text-center text-[11px] text-[#94A3B8]">
+                  Seus dados são confidenciais e nunca serão compartilhados.
+                </p>
+              </form>
+            </div>
           </div>
         </div>
       </motion.div>

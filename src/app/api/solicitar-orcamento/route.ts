@@ -14,7 +14,7 @@ export async function POST(req: NextRequest) {
 
     const supabase = createClient(supabaseUrl, supabaseKey)
 
-    const { error } = await supabase.from("leads").insert([{ nome, empresa, contato, email, estado }])
+    const { error } = await supabase.from("leads").insert([{ nome, empresa, contato, email, estado, source: "lp_revenda" }])
 
     if (error) {
       return NextResponse.json({ ok: false, error: error.message }, { status: 500 })

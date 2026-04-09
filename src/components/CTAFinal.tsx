@@ -62,7 +62,7 @@ export function CTAFinal() {
     "w-full rounded-lg border border-[#E2E8F0] bg-white px-4 py-3 text-sm text-[#0F172A] placeholder:text-[#94A3B8] focus:border-[#2BAAD4] focus:outline-none focus:ring-2 focus:ring-[#2BAAD4]/20 transition-all"
 
   return (
-    <section className="bg-white py-16 md:py-24 border-t border-[#E2E8F0]">
+    <section id="formulario" className="bg-white py-16 md:py-24 border-t border-[#E2E8F0]">
       <motion.div
         className="max-w-[1120px] mx-auto px-5"
         variants={fadeUp}

@@ -3,11 +3,7 @@
 import { motion } from "framer-motion"
 import { fadeUp, stagger } from "@/lib/animations"
 
-interface Props {
-  onOpenModal: () => void
-}
-
-export function Hero({ onOpenModal }: Props) {
+export function Hero() {
   return (
     <section className="relative overflow-hidden bg-[#113d5e]">
       {/* Video Background */}
@@ -69,15 +65,15 @@ export function Hero({ onOpenModal }: Props) {
         {/* Buttons and Icon (Matching Reference) */}
         <motion.div className="mt-10 md:mt-12 flex gap-4 md:gap-6 flex-wrap justify-center items-center" variants={fadeUp}>
           <div className="flex items-center gap-4">
-            <button
-              onClick={onOpenModal}
+            <a
+              href="#formulario"
               className="inline-flex items-center justify-center rounded-full px-10 py-5 text-[16px] font-black italic text-black uppercase transition-all duration-300 hover:scale-[1.02] shadow-[0_0_30px_rgba(0,242,254,0.4)] tracking-wide"
               style={{
                 background: "linear-gradient(90deg, #00FFcc 0%, #00FF66 100%)",
               }}
             >
               GARANTA SEU ESTOQUE
-            </button>
+            </a>
 
             {/* Circular decorative icon next to button */}
             <a href="#categorias" className="hidden sm:flex relative items-center justify-center w-14 h-14 rounded-full border-2 border-dashed border-[#00FF66]/50 bg-black/20 backdrop-blur-sm group hover:border-[#00FF66] transition-colors cursor-pointer">

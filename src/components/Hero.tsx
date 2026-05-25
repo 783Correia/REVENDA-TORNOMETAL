@@ -12,6 +12,7 @@ export function Hero() {
         loop
         muted
         playsInline
+        poster="/fachada.png"
         className="absolute inset-0 w-full h-full object-cover z-0"
       >
         <source src="/hero-bg.mp4" type="video/mp4" />

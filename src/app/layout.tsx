@@ -22,6 +22,7 @@ export default function RootLayout({
   return (
     <html lang="pt-BR">
       <head>
+        <link rel="preconnect" href="https://xebskockruobeovmqlhq.supabase.co" />
         <Script src="https://t.contentsquare.net/uxa/258ba3bfad18a.js" strategy="afterInteractive" />
         <Script id="meta-pixel" strategy="afterInteractive">
           {`

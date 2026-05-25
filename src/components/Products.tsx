@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import Image from "next/image"
 import { motion, AnimatePresence } from "framer-motion"
 import { fadeUp } from "@/lib/animations"
 import { products } from "@/lib/products-data"
@@ -84,13 +85,15 @@ export function Products() {
                 transition={{ duration: 0.2 }}
                 className="group bg-[#F7F8FA] rounded-2xl overflow-hidden border border-[#E2E8F0] hover:border-[#1B8DC0]/30 transition-all duration-300 hover:shadow-lg"
               >
-                <div className="aspect-square bg-white p-4 flex items-center justify-center overflow-hidden">
+                <div className="aspect-square bg-white p-4 flex items-center justify-center overflow-hidden relative">
                   {product.image ? (
-                    <img
+                    <Image
                       src={product.image}
                       alt={`${product.name}${product.code ? ` - ${product.code}` : ""}`}
-                      className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300"
-                      loading="lazy"
+                      fill
+                      sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                      className="object-contain p-4 group-hover:scale-105 transition-transform duration-300"
+                      loading={i < 8 ? "eager" : "lazy"}
                     />
                   ) : (
                     <div className="w-full h-full flex items-center justify-center text-slate-200 text-[11px] font-medium text-center">

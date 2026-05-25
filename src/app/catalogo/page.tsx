@@ -65,7 +65,7 @@ function IconWhatsApp() {
 
 // ─── Product Card ─────────────────────────────────────────────────────────────
 
-function ProductCard({ product, inCart, onAdd }: { product: Product; inCart: boolean; onAdd: () => void }) {
+function ProductCard({ product, inCart, onAdd, priority }: { product: Product; inCart: boolean; onAdd: () => void; priority?: boolean }) {
   return (
     <div className="flex flex-col bg-white rounded-2xl border border-slate-200 overflow-hidden hover:border-[#2BAAD4]/50 hover:shadow-lg transition-all duration-200 group">
       {/* Image */}
@@ -77,7 +77,7 @@ function ProductCard({ product, inCart, onAdd }: { product: Product; inCart: boo
             fill
             sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
             className="object-contain p-4"
-            unoptimized
+            priority={priority}
           />
         ) : (
           <div className="absolute inset-0 flex items-center justify-center bg-slate-50 text-slate-300 text-[10px] font-medium">
@@ -171,7 +171,7 @@ function CartDrawer({ cart, onClose, onUpdateQty, onRemove }: {
                   className="flex gap-3 items-center bg-slate-50 rounded-xl p-3 border border-slate-100"
                 >
                   <div className="relative w-12 h-12 flex-shrink-0 rounded-lg overflow-hidden bg-white border border-slate-200">
-                    <Image src={product.image} alt={product.name} fill className="object-contain p-1" unoptimized />
+                    <Image src={product.image} alt={product.name} fill className="object-contain p-1" sizes="48px" />
                   </div>
                   <div className="flex-1 min-w-0">
                     <p className="text-[11px] font-semibold text-slate-800 line-clamp-2 leading-snug">{product.name}</p>
@@ -356,12 +356,13 @@ export default function Catalogo() {
 
         {filtered.length > 0 ? (
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
-            {filtered.map(product => (
+            {filtered.map((product, i) => (
               <ProductCard
                 key={getKey(product)}
                 product={product}
                 inCart={isInCart(product)}
                 onAdd={() => { addToCart(product); setCartOpen(true) }}
+                priority={i < 8}
               />
             ))}
           </div>

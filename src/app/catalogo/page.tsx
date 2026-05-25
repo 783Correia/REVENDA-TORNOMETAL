@@ -70,14 +70,20 @@ function ProductCard({ product, inCart, onAdd }: { product: Product; inCart: boo
     <div className="flex flex-col bg-white rounded-2xl border border-slate-200 overflow-hidden hover:border-[#2BAAD4]/50 hover:shadow-lg transition-all duration-200 group">
       {/* Image */}
       <div className="relative bg-white" style={{ paddingBottom: "75%" }}>
-        <Image
-          src={product.image}
-          alt={product.name}
-          fill
-          sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
-          className="object-contain p-4"
-          unoptimized
-        />
+        {product.image ? (
+          <Image
+            src={product.image}
+            alt={product.name}
+            fill
+            sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+            className="object-contain p-4"
+            unoptimized
+          />
+        ) : (
+          <div className="absolute inset-0 flex items-center justify-center bg-slate-50 text-slate-300 text-[10px] font-medium">
+            Imagem em breve
+          </div>
+        )}
         {product.brand && (
           <span className="absolute top-2 left-2 rounded-full bg-white/90 backdrop-blur-sm border border-slate-200 px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider text-[#0D3D5C]">
             {product.brand}

@@ -85,12 +85,18 @@ export function Products() {
                 className="group bg-[#F7F8FA] rounded-2xl overflow-hidden border border-[#E2E8F0] hover:border-[#1B8DC0]/30 transition-all duration-300 hover:shadow-lg"
               >
                 <div className="aspect-square bg-white p-4 flex items-center justify-center overflow-hidden">
-                  <img
-                    src={product.image}
-                    alt={`${product.name}${product.code ? ` - ${product.code}` : ""}`}
-                    className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300"
-                    loading="lazy"
-                  />
+                  {product.image ? (
+                    <img
+                      src={product.image}
+                      alt={`${product.name}${product.code ? ` - ${product.code}` : ""}`}
+                      className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300"
+                      loading="lazy"
+                    />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center text-slate-200 text-[11px] font-medium text-center">
+                      Imagem em breve
+                    </div>
+                  )}
                 </div>
                 <div className="p-3 md:p-4">
                   <span className="text-[10px] font-semibold uppercase tracking-wider text-[#1B8DC0]">
